@@ -311,7 +311,7 @@ async function getSwaggerYaml(example_set, outputPath) {
     if (!process.argv.includes(SKIP_VALIDATION.tags) && !hasTrueResult) {
       hasTrueResult = await validateTags(tags, schemaMap);
     }
-​
+
     if (!process.argv.includes(SKIP_VALIDATION.attributes) && !hasTrueResult) {
       hasTrueResult = await validateAttributes(attributes, schemaMap);
     }
@@ -370,8 +370,11 @@ function addEnumTag(base, layer) {
   base["x-flows"] = layer["flows"];
   base["x-examples"] = layer["examples"];
   base["x-attributes"] = layer["attributes"];
-base["x-errorcodes"] = layer["error_codes"];
+  base["x-errorcodes"] = layer["error_codes"];
   base["x-tlc"] = layer["tlc"];
+  base["x-featureui"] = layer["feature-ui"]
+  base["x-sandboxui"] = layer["sandbox-ui"]
+
 }
 
 function GenerateYaml(base, layer, output_yaml) {
@@ -388,6 +391,7 @@ function GenerateYaml(base, layer, output_yaml) {
 
 function checkMDFiles(){
   const filePath = './docs';
+if(!fs.existsSync(path.join(filePath)))fs.mkdirSync(filePath) //create docs folder if not exists
   const files = fs.readdirSync(filePath);
   const markdownFiles=files.filter((file)=>file.endsWith(".md"))
  return markdownFiles
